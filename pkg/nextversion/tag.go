@@ -21,6 +21,7 @@ func LastTag(repo *git.Repository) (*Tag, error) {
 
 	tag := Tag{
 		Commit: object.Commit{},
+		Semver: &semver.Version{},
 	}
 
 	tagRefs, err := repo.Tags()
