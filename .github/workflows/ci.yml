@@ -1,0 +1,14 @@
+name: Basic CI
+
+on:
+  push:
+    branches: 
+      - '*'
+  pull_request:
+    branches: 
+      - main
+
+jobs:
+  test:
+    name: Testing
+    uses: ./.github/workflows/call-testing.yml

@@ -1,0 +1,23 @@
+name: 'Testing'
+on:
+  workflow_call:
+
+jobs:
+
+  test:
+    name: 'Test & vet go'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      
+      - name: Run vet
+        run: make vet
+      
+      - name: Run tests
+        run: make test
