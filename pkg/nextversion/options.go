@@ -14,7 +14,4 @@ type Options struct {
 	// Prestable marks this repo as still in development
 	// In this state, major changes will not increment major version if current version is pre 1.0.0
 	Prestable bool
-
-	// OnMismatch determines what should happen when we find a non convertional commit message
-	OnMismatch string
 }

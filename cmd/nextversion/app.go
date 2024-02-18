@@ -40,7 +40,6 @@ func appAction(ctx *cli.Context) error {
 		Format:         ctx.String("format"),
 		DefaultCurrent: ctx.String("defaultCurrent"),
 		Prestable:      ctx.Bool("prestable"),
-		OnMismatch:     ctx.String("on-mismatch"),
 	}
 
 	versions, err := nextversion.Versions(opts)
@@ -84,14 +83,6 @@ func appFlags() []cli.Flag {
 			Aliases: []string{"p"},
 			Usage:   "Pre-stable mode",
 		},
-
-		&cli.StringFlag{
-			Name:    "on-mismatch",
-			Value:   "skip-merge",
-			Aliases: []string{"m"},
-			Usage:   "Behaviour of commit message parser (skip, skip-merge, fail)",
-			Action:  verifyOnMismatchValue,
-		},
 	}
 }
 
@@ -100,15 +91,6 @@ func verifyFormatValue(ctx *cli.Context, value string) error {
 	valid := []string{"shell", "json"}
 	if !slices.Contains[[]string, string](valid, value) {
 		return fmt.Errorf("--format must be one of [%s]", strings.Join(valid, ", "))
-	}
-	return nil
-}
-
-func verifyOnMismatchValue(ctx *cli.Context, value string) error {
-
-	valid := []string{"skip", "skip-merge", "fail"}
-	if !slices.Contains[[]string, string](valid, value) {
-		return fmt.Errorf("--on-mismatch must be one of [%s]", strings.Join(valid, ", "))
 	}
 	return nil
 }
