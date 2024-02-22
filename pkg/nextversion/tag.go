@@ -71,6 +71,7 @@ func LastTag(repo *git.Repository) (*Tag, error) {
 		if semantic.GreaterThan(tag.Semver) {
 			tag.Commit = *commit
 			tag.Name = obj.Name
+			tag.Semver = semantic
 			tag.exists = true
 		}
 
