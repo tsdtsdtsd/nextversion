@@ -31,16 +31,15 @@ func LastTag(repo *git.Repository) (*Tag, error) {
 
 	err = tagRefs.ForEach(func(ref *plumbing.Reference) error {
 
+		// Skip if this is not an annotated tag
 		obj, err := repo.TagObject(ref.Hash())
 		if err != nil {
-			// case plumbing.ErrObjectNotFound can be silently skipped
 			return nil
 		}
 
 		// Skip non-semver tag names
 		semantic, err := semver.NewVersion(obj.Name)
 		if err != nil {
-			// fmt.Println("non-semver", obj.Name)
 			return nil
 		}
 
@@ -52,7 +51,6 @@ func LastTag(repo *git.Repository) (*Tag, error) {
 		commit, err := obj.Commit()
 		if err != nil {
 			// TODO: should we notify the user?
-			// fmt.Println("no commit")
 			return err
 		}
 
