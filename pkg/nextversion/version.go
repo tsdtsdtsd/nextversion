@@ -48,7 +48,6 @@ func Versions(opts *Options) (*Result, error) {
 	}
 
 	// Current version info
-
 	result.CurrentVersion = opts.DefaultCurrent
 	if lastTag.Exists() {
 		result.HasCurrentVersion = true
@@ -69,6 +68,11 @@ func Versions(opts *Options) (*Result, error) {
 		return result, fmt.Errorf("failed to fetch git log entries: %w", err)
 	}
 
+	machine := parser.NewMachine(
+		conventionalcommits.WithTypes(conventionalcommits.TypesConventional),
+		conventionalcommits.WithBestEffort(),
+	)
+
 	// Iterate logs and collect changes
 	logIterator.ForEach(func(c *object.Commit) error {
 
@@ -77,16 +81,14 @@ func Versions(opts *Options) (*Result, error) {
 			return nil
 		}
 
-		msg := strings.TrimSpace(c.Message)
-
-		res, err := parser.NewMachine(conventionalcommits.WithTypes(conventionalcommits.TypesConventional)).Parse([]byte(msg))
+		message, err := machine.Parse([]byte(strings.TrimSpace(c.Message)))
 		if err != nil {
 			// Skip unparsable commit messages
 			// githubactions.Warningf("skipping unparsable commit %s: %s", c.Hash.String(), err)
 			return nil
 		}
 
-		bump.CollectChange(res.IsBreakingChange(), res.IsFeat(), res.IsFix())
+		bump.CollectChange(message.IsBreakingChange(), message.IsFeat(), message.IsFix())
 		return nil
 	})
 
