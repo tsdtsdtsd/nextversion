@@ -80,6 +80,6 @@ func LastTag(repo *git.Repository) (*Tag, error) {
 	return &lastTag, err
 }
 
-func (v *Tag) Exists() bool {
-	return v.exists
+func (tag *Tag) Exists() bool {
+	return tag.exists
 }
