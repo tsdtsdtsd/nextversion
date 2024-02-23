@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"slices"
 	"strings"
 
@@ -47,7 +48,7 @@ func appAction(ctx *cli.Context) error {
 		return fmt.Errorf("failed to detect versions: %w", err)
 	}
 
-	return nextversion.Print(versions, ctx.String("format"))
+	return nextversion.Print(os.Stdout, versions, ctx.String("format"))
 
 }
 

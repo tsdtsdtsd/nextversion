@@ -3,29 +3,33 @@ package nextversion
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 )
 
-func Print(versions *Result, format string) error {
+func Print(writer io.Writer, versions *Result, format string) error {
 
 	switch format {
-	case "shell":
+	case "simple":
+
 		// TODO: OS specific EOL?
-		fmt.Printf("CURRENT=%s\n", versions.CurrentVersion)
-		fmt.Printf("CURRENT_STRICT=%s\n", versions.CurrentVersionStrict)
-		fmt.Printf("HAS_CURRENT=%t\n", versions.HasCurrentVersion)
-		fmt.Printf("NEXT=%s\n", versions.NextVersion)
-		fmt.Printf("NEXT_STRICT=%s\n", versions.NextVersionStrict)
-		fmt.Printf("HAS_NEXT=%t\n", versions.HasNextVersion)
-		fmt.Printf("PRERELEASE=%s\n", versions.PrereleaseVersion)
-		fmt.Printf("PRERELEASE_STRICT=%s\n", versions.PrereleaseVersionStrict)
+
+		fmt.Fprintf(writer, "CURRENT=%s\n", versions.CurrentVersion)
+		fmt.Fprintf(writer, "CURRENT_STRICT=%s\n", versions.CurrentVersionStrict)
+		fmt.Fprintf(writer, "HAS_CURRENT=%t\n", versions.HasCurrentVersion)
+		fmt.Fprintf(writer, "NEXT=%s\n", versions.NextVersion)
+		fmt.Fprintf(writer, "NEXT_STRICT=%s\n", versions.NextVersionStrict)
+		fmt.Fprintf(writer, "HAS_NEXT=%t\n", versions.HasNextVersion)
+		fmt.Fprintf(writer, "PRERELEASE=%s\n", versions.PrereleaseVersion)
+		fmt.Fprintf(writer, "PRERELEASE_STRICT=%s\n", versions.PrereleaseVersionStrict)
 
 	case "json":
-		jsonString, err := json.Marshal(versions)
+
+		outJSON, err := json.Marshal(versions)
 		if err != nil {
-			return fmt.Errorf("failed to marshal JSON: %w", err)
+			return fmt.Errorf("failed to marshal to JSON: %w", err)
 		}
 
-		fmt.Printf("%s", jsonString)
+		writer.Write(outJSON)
 	}
 
 	return nil
