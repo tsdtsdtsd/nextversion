@@ -65,9 +65,9 @@ func appFlags() []cli.Flag {
 
 		&cli.StringFlag{
 			Name:    "format",
-			Value:   "shell",
+			Value:   "simple",
 			Aliases: []string{"f"},
-			Usage:   "Output `FORMAT` (shell, json)",
+			Usage:   "Output `FORMAT` (simple, json)",
 			Action:  verifyFormatValue,
 		},
 
@@ -89,7 +89,7 @@ func appFlags() []cli.Flag {
 
 func verifyFormatValue(ctx *cli.Context, value string) error {
 
-	valid := []string{"shell", "json"}
+	valid := []string{"simple", "json"}
 	if !slices.Contains[[]string, string](valid, value) {
 		return fmt.Errorf("--format must be one of [%s]", strings.Join(valid, ", "))
 	}
