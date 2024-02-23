@@ -7,7 +7,7 @@ import (
 	"github.com/tsdtsdtsd/nextversion/pkg/nextversion"
 )
 
-type testcase struct {
+type bumperTestcase struct {
 	OldVersion      string
 	Prestable       bool
 	ChangeMajor     bool
@@ -36,7 +36,7 @@ func TestCurrent(t *testing.T) {
 }
 
 func TestPrestable(t *testing.T) {
-	testTable := []testcase{
+	testTable := []bumperTestcase{
 		// ChangeMajor = true
 		{
 			OldVersion:      "1.1.0",
@@ -115,11 +115,11 @@ func TestPrestable(t *testing.T) {
 		},
 	}
 
-	runValidChecksOnTable(t, testTable)
+	runValidBumperChecksOnTable(t, testTable)
 }
 
 func TestNotPrestable(t *testing.T) {
-	testTable := []testcase{
+	testTable := []bumperTestcase{
 		// ChangeMajor = true
 		{
 			OldVersion:      "0.1.0",
@@ -255,12 +255,12 @@ func TestNotPrestable(t *testing.T) {
 		},
 	}
 
-	runValidChecksOnTable(t, testTable)
+	runValidBumperChecksOnTable(t, testTable)
 }
 
 func TestInvalidOldVersion(t *testing.T) {
 
-	testTable := []testcase{
+	testTable := []bumperTestcase{
 		{
 			OldVersion: "",
 		},
@@ -285,7 +285,7 @@ func TestInvalidOldVersion(t *testing.T) {
 	}
 }
 
-func runValidChecksOnTable(t *testing.T, testTable []testcase) {
+func runValidBumperChecksOnTable(t *testing.T, testTable []bumperTestcase) {
 	for _, testCase := range testTable {
 		b, err := nextversion.NewBumper(testCase.OldVersion, testCase.Prestable)
 
