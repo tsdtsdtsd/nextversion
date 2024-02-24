@@ -9,6 +9,10 @@ WHITE  := $(shell tput -Txterm setaf 7)
 CYAN   := $(shell tput -Txterm setaf 6)
 RESET  := $(shell tput -Txterm sgr0)
 
+GENERATE_FIXTURES=cd fixtures && \
+	  chmod u+x generate.sh && \
+	  ./generate.sh
+
 .PHONY: test cover
 
 all: help
@@ -19,18 +23,22 @@ vet: ## Run vet
 	$(GO) vet ./...
 
 test: ## Run all tests with race detection
+	$(GENERATE_FIXTURES)
 	$(GOTEST) -v -race ./...
 
 testfast: ## Run all tests
+	$(GENERATE_FIXTURES)
 	$(GOTEST) -v ./...
 
 cover: ## Run tests and open coverage in browser
+	$(GENERATE_FIXTURES)
 	$(GOTEST) -v -coverpkg=./... -covermode=atomic -coverprofile=$(COVERFILE) ./...
 	$(GOCOVER) -func=$(COVERFILE)
 	$(GOCOVER) -html=$(COVERFILE)
 	@rm $(COVERFILE)
 
 coverall: ## Run tests and print coverage across all packages
+	$(GENERATE_FIXTURES)
 	$(GOTEST) -v -coverpkg=./... -coverprofile=$(COVERFILE) ./... 
 	$(GOCOVER) -func $(COVERFILE) 
 	@rm $(COVERFILE)
@@ -45,6 +53,10 @@ run: ## Compile and run application (development)
 
 run-race: ## Compile and run application with race detection (development)
 	@CGO_ENABLED=0 $(GO) run -race ./cmd/nextversion/ $(ARGS)
+
+## Other:
+clean: ## Cleanup
+	find fixtures/* ! -name 'generate.sh' -exec rm -rf {} +
 
 ## Help:
 help: ## Show this help.

@@ -25,3 +25,7 @@ go.work
 
 # Local development artifacts
 .local/
+
+# Ignore generated fixtures
+fixtures/*
+!fixtures/generate.sh
