@@ -56,6 +56,7 @@ run-race: ## Compile and run application with race detection (development)
 
 ## Other:
 clean: ## Cleanup
+	rm -rf dist/*
 	find fixtures/* ! -name 'generate.sh' -exec rm -rf {} +
 
 ## Help:
