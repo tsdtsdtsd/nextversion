@@ -8,6 +8,13 @@ create_first_commit() {
     git commit -m "feat: add file"
 }
 
+git_init_and_config() {
+    git init
+    git config user.email "tester@example.com"
+    git config user.name "Tester Tony"
+    git config init.defaultBranch main
+}
+
 # Cleanup target directory if necessary
 for dir in "${directories[@]}"; do
     # Check if the directory exists
@@ -18,18 +25,11 @@ for dir in "${directories[@]}"; do
     mkdir $dir
 done
 
-# Config
-
-git config user.email "tester@example.com"
-git config user.name "Tester Tony"
-git config init.defaultBranch main
-
 #
 
 cd valid-tag
 
-git init
-
+git_init_and_config
 create_first_commit
 
 git tag -a -m "v0.1.0" v0.1.0
@@ -42,8 +42,7 @@ git commit -m "feat: add file2"
 
 cd ../no-valid-tags
 
-git init
-
+git_init_and_config
 create_first_commit
 
 git tag -a -m "should-fail" "hello"
