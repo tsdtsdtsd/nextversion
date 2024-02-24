@@ -53,7 +53,7 @@ func Versions(opts *Options) (*Result, error) {
 		result.HasCurrentVersion = true
 		result.CurrentVersion = lastTag.Semver.Original()
 	}
-	result.CurrentVersionStrict = strings.TrimPrefix(lastTag.Semver.String(), VersionPrefix)
+	result.CurrentVersionStrict = strings.TrimPrefix(lastTag.Semver.String(), versionPrefix)
 
 	bump, err := NewBumper(result.CurrentVersion, opts.Prestable)
 	if err != nil {
@@ -93,7 +93,7 @@ func Versions(opts *Options) (*Result, error) {
 	})
 
 	result.NextVersion = bump.Next()
-	result.NextVersionStrict = strings.TrimPrefix(result.NextVersion, VersionPrefix)
+	result.NextVersionStrict = strings.TrimPrefix(result.NextVersion, versionPrefix)
 
 	result.HasNextVersion = bump.Next() != bump.Current()
 	// Prerelease

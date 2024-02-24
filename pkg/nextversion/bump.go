@@ -5,7 +5,7 @@ import (
 )
 
 const (
-	VersionPrefix = "v"
+	versionPrefix = "v"
 )
 
 type Bumper struct {
@@ -46,32 +46,32 @@ func (b *Bumper) Next() string {
 	case true:
 
 		if b.hasBreaking && b.current.Major() > 0 {
-			return VersionPrefix + b.current.IncMajor().String()
+			return versionPrefix + b.current.IncMajor().String()
 		}
 
 		if b.hasBreaking || b.hasFeature {
-			return VersionPrefix + b.current.IncMinor().String()
+			return versionPrefix + b.current.IncMinor().String()
 		}
 
 	case false:
 
 		if b.hasBreaking {
-			return VersionPrefix + b.current.IncMajor().String()
+			return versionPrefix + b.current.IncMajor().String()
 		}
 
 		if b.hasFeature {
-			return VersionPrefix + b.current.IncMinor().String()
+			return versionPrefix + b.current.IncMinor().String()
 		}
 
 	}
 
 	if b.hasFix {
-		return VersionPrefix + b.current.IncPatch().String()
+		return versionPrefix + b.current.IncPatch().String()
 	}
 
-	return VersionPrefix + b.current.String()
+	return versionPrefix + b.current.String()
 }
 
 func (b *Bumper) Current() string {
-	return VersionPrefix + b.current.String()
+	return versionPrefix + b.current.String()
 }
