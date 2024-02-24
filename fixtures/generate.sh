@@ -22,7 +22,7 @@ done
 
 git config --global user.email "tester@example.com"
 git config --global user.name "Tester Tony"
-git branch -m main
+git config --global init.defaultBranch main
 
 #
 
