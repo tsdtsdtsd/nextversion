@@ -56,17 +56,8 @@ func LastTag(repo *git.Repository) (*Tag, error) {
 
 		// At this point we know that this is a valid tag object
 
-		// Store tag and commit if this is the first iteration
-		if lastTag.Commit.Hash.IsZero() {
-			lastTag.Commit = *commit
-			lastTag.Name = obj.Name
-			lastTag.Semver = semantic
-			lastTag.exists = true
-			return nil
-		}
-
-		// Store tag if it's a greater version than the one we already stored
-		if semantic.GreaterThan(lastTag.Semver) {
+		// Store tag if this is the first valid tag or it has a greater version than the one we stored before
+		if lastTag.Commit.Hash.IsZero() || semantic.GreaterThan(lastTag.Semver) {
 			lastTag.Commit = *commit
 			lastTag.Name = obj.Name
 			lastTag.Semver = semantic
@@ -74,7 +65,6 @@ func LastTag(repo *git.Repository) (*Tag, error) {
 		}
 
 		return nil
-
 	})
 
 	return &lastTag, err
