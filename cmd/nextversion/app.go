@@ -25,6 +25,7 @@ func newApp() *cli.App {
 	app := &cli.App{
 		Name:        "nextversion",
 		Usage:       "versioning helper tool",
+		UsageText:   "nextversion [global options] [command]",
 		Version:     Version,
 		Description: "nextversion detects application version based on git tags and suggests a bumped version based on conventional commits.",
 		Flags:       appFlags(),
