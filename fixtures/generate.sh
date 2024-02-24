@@ -18,7 +18,13 @@ for dir in "${directories[@]}"; do
     mkdir $dir
 done
 
-# Create target directory
+# Config
+
+git config --global user.email "tester@example.com"
+git config --global user.name "Tester Tony"
+git branch -m main
+
+#
 
 cd valid-tag
 
