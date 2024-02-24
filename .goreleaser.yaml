@@ -50,21 +50,23 @@ archives:
         format: zip
 
 changelog:
+  use: git
   filters:
     include:
-      - "^feat!?:"
-      - "^fix!?:"
+      - 'feat(\([[:word:]]+\))??!?:'
+      - 'fix(\([[:word:]]+\))??!?:'
+      - 'chore\(deps\)??!?:'
     exclude:
       - "^docs:"
       - "^test:"
       - "^ci:"
       - "^chore:"
-#   groups:
-#     - title: Features
-#       regexp: '^.*?feat(\([[:word:]]+\))??!?:.+$'
-#       order: 0
-#     - title: "Bug fixes"
-#       regexp: '^.*?fix(\([[:word:]]+\))??!?:.+$'
-#       order: 1
-#     - title: Others
-#       order: 999
+  groups:
+    - title: Features
+      regexp: '^.*?feat(\([[:word:]]+\))??!?:.+$'
+      order: 0
+    - title: "Bug fixes"
+      regexp: '^.*?fix(\([[:word:]]+\))??!?:.+$'
+      order: 1
+    - title: Others
+      order: 999
