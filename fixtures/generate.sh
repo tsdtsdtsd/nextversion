@@ -20,9 +20,9 @@ done
 
 # Config
 
-git config --global user.email "tester@example.com"
-git config --global user.name "Tester Tony"
-git config --global init.defaultBranch main
+git config user.email "tester@example.com"
+git config user.name "Tester Tony"
+git config init.defaultBranch main
 
 #
 
