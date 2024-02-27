@@ -28,8 +28,6 @@ builds:
       - arm
       - arm64
     main: ./cmd/nextversion
-    ldflags:
-      - -w -s
 
 # sboms:
 #   - artifacts: archive
