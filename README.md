@@ -32,6 +32,8 @@ nextversion detects current application version based on git tags and suggests a
 ## Usage
 
 ```sh
+# Let's check the CLI help screen
+
 $ nextversion --help
 NAME:
    nextversion - versioning helper tool
@@ -40,7 +42,7 @@ USAGE:
    nextversion [global options] command [command options] 
 
 VERSION:
-   v0.0.0-dev
+   v0.2.0
 
 DESCRIPTION:
    nextversion detects application version based on git tags and suggests a bumped version based on conventional commits.
@@ -55,4 +57,30 @@ GLOBAL OPTIONS:
    --prestable, -p                       Pre-stable mode (default: false)
    --help, -h                            show help
    --version, -v                         print version of this tool (default: false)
+
+# Run nextversion 
+
+~/my-repo$ nextversion
+CURRENT=v0.1.2
+CURRENT_STRICT=0.1.2
+HAS_CURRENT=true
+NEXT=v0.2.0
+NEXT_STRICT=0.2.0
+HAS_NEXT=true
+PRERELEASE=v0.2.0-rc+main.cd81544
+PRERELEASE_STRICT=0.2.0-rc+main.cd81544
+
+# Please return JSON and make it readable
+
+~/my-repo$ nextversion -f json | jq
+{
+  "current": "v0.1.2",
+  "current-strict": "0.1.2",
+  "has-current": true,
+  "next": "v0.2.0",
+  "next-strict": "0.2.0",
+  "has-next": true,
+  "prerelease": "v0.2.0-rc+main.cd81544",
+  "prerelease-strict": "0.2.0-rc+main.cd81544"
+}
 ```
