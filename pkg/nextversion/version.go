@@ -38,7 +38,7 @@ func Versions(opts *Options) (*Result, error) {
 	// Open repository
 	repo, err := git.PlainOpen(opts.Repo)
 	if err != nil {
-		return result, fmt.Errorf("failed to open repository: %w", err)
+		return result, fmt.Errorf("failed to open repository at '%s': %w", opts.Repo, err)
 	}
 
 	// Fetch last version tag details
