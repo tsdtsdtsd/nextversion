@@ -58,13 +58,16 @@ changelog:
       - "^docs:"
       - "^test:"
       - "^ci:"
-      - "^chore:"
+      # - "^chore:"
   groups:
     - title: Features
       regexp: '^.*?feat(\([[:word:]]+\))??!?:.+$'
       order: 0
-    - title: "Bug fixes"
+    - title: "Bugfixes"
       regexp: '^.*?fix(\([[:word:]]+\))??!?:.+$'
       order: 1
+    - title: Dependency Updates
+      regexp: '^.*?chore\(deps\)??!?:.+$'
+      order: 10 
     - title: Others
       order: 999
