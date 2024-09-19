@@ -3,7 +3,7 @@ module github.com/tsdtsdtsd/nextversion
 go 1.22
 
 require (
-	github.com/Masterminds/semver/v3 v3.2.1
+	github.com/Masterminds/semver/v3 v3.3.0
 	github.com/go-git/go-git/v5 v5.12.0
 	github.com/leodido/go-conventionalcommits v0.12.0
 	github.com/stretchr/testify v1.9.0
