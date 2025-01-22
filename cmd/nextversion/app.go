@@ -40,8 +40,8 @@ func appAction(ctx *cli.Context) error {
 	opts := &nextversion.Options{
 		Repo:           ctx.String("repo"),
 		Format:         ctx.String("format"),
-		DefaultCurrent: ctx.String("defaultCurrent"),
-		Prestable:      ctx.Bool("prestable"),
+		DefaultCurrent: ctx.String("default-current"),
+		PreStable:      ctx.Bool("pre-stable"),
 	}
 
 	versions, err := nextversion.Versions(opts)
@@ -73,17 +73,17 @@ func appFlags() []cli.Flag {
 		},
 
 		&cli.StringFlag{
-			Name:    "defaultCurrent",
+			Name:    "default-current",
 			Value:   "v0.0.0",
 			Aliases: []string{"d"},
 			Usage:   "Fallback current `VERSION` if none could be detected",
 		},
 
 		&cli.BoolFlag{
-			Name:    "prestable",
+			Name:    "pre-stable",
 			Value:   false,
 			Aliases: []string{"p"},
-			Usage:   "Pre-stable mode",
+			Usage:   "Breaking changes will not increase major version if current version matches v0.*.*",
 		},
 	}
 }

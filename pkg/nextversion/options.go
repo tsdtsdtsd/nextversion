@@ -11,7 +11,7 @@ type Options struct {
 	// DefaultCurrent will be used as fallback if a current version could not be determined via tags
 	DefaultCurrent string
 
-	// Prestable marks this repo as still in development
+	// PreStable marks this repo as still in development
 	// In this state, major changes will not increment major version if current version is pre 1.0.0
-	Prestable bool
+	PreStable bool
 }

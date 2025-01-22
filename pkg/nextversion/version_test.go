@@ -13,7 +13,7 @@ func TestVersions_OpenRepository_Success(t *testing.T) {
 	opts := &nextversion.Options{
 		Repo:           "../../fixtures/no-valid-tags",
 		DefaultCurrent: "v1.0.0",
-		Prestable:      false,
+		PreStable:      false,
 	}
 	result, err := nextversion.Versions(opts)
 	if err != nil {
