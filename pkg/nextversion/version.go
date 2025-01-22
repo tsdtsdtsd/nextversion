@@ -15,6 +15,8 @@ import (
 const (
 	hashLength          = 7
 	prereleaseShorthand = "rc"
+
+	defaultCurrent = "v0.0.0"
 )
 
 type Result struct {
@@ -35,6 +37,10 @@ func Versions(opts *Options) (*Result, error) {
 		result = &Result{}
 	)
 
+	if opts.DefaultCurrent == "" {
+		opts.DefaultCurrent = defaultCurrent
+	}
+
 	// Open repository
 	repo, err := git.PlainOpen(opts.Repo)
 	if err != nil {
@@ -53,7 +59,7 @@ func Versions(opts *Options) (*Result, error) {
 		result.HasCurrentVersion = true
 		result.CurrentVersion = lastTag.Semver.Original()
 	}
-	result.CurrentVersionStrict = strings.TrimPrefix(lastTag.Semver.String(), versionPrefix)
+	result.CurrentVersionStrict = strings.TrimPrefix(result.CurrentVersion, versionPrefix)
 
 	bump, err := NewBumper(result.CurrentVersion, opts.PreStable, opts.ForceStable)
 	if err != nil {
