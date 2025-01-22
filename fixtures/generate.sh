@@ -13,6 +13,7 @@ git_init_and_config() {
     git config user.email "tester@example.com"
     git config user.name "Tester Tony"
     git config init.defaultBranch main
+    git branch -m main
 }
 
 # Cleanup target directory if necessary
