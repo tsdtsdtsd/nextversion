@@ -9,7 +9,8 @@ import (
 
 type bumperTestcase struct {
 	OldVersion      string
-	Prestable       bool
+	PreStable       bool
+	ForceStable     bool
 	ChangeMajor     bool
 	ChangeMinor     bool
 	ChangePatch     bool
@@ -20,15 +21,29 @@ func TestCurrent(t *testing.T) {
 
 	oldVersion := "v1.0.1"
 
-	// Prestable
-	b, err := nextversion.NewBumper(oldVersion, true)
+	// Pre-stable, force stable
+	b, err := nextversion.NewBumper(oldVersion, true, true)
 	v := b.Current()
 
 	assert.NoError(t, err)
 	assert.Equal(t, oldVersion, v)
 
-	// Not Prestable
-	b, err = nextversion.NewBumper(oldVersion, false)
+	// Pre-stable, don't force stable
+	b, err = nextversion.NewBumper(oldVersion, true, false)
+	v = b.Current()
+
+	assert.NoError(t, err)
+	assert.Equal(t, oldVersion, v)
+
+	// Not pre-stable, force stable
+	b, err = nextversion.NewBumper(oldVersion, false, true)
+	v = b.Current()
+
+	assert.NoError(t, err)
+	assert.Equal(t, oldVersion, v)
+
+	// Not pre-stable, don't force stable
+	b, err = nextversion.NewBumper(oldVersion, false, false)
 	v = b.Current()
 
 	assert.NoError(t, err)
@@ -40,7 +55,7 @@ func TestPrestable(t *testing.T) {
 		// ChangeMajor = true
 		{
 			OldVersion:      "1.1.0",
-			Prestable:       true,
+			PreStable:       true,
 			ChangeMajor:     true,
 			ChangeMinor:     true,
 			ChangePatch:     true,
@@ -49,7 +64,7 @@ func TestPrestable(t *testing.T) {
 
 		{
 			OldVersion:      "0.1.0",
-			Prestable:       true,
+			PreStable:       true,
 			ChangeMajor:     true,
 			ChangeMinor:     true,
 			ChangePatch:     true,
@@ -57,7 +72,7 @@ func TestPrestable(t *testing.T) {
 		},
 		{
 			OldVersion:      "0.1.0",
-			Prestable:       true,
+			PreStable:       true,
 			ChangeMajor:     true,
 			ChangeMinor:     true,
 			ChangePatch:     false,
@@ -65,7 +80,7 @@ func TestPrestable(t *testing.T) {
 		},
 		{
 			OldVersion:      "0.1.0",
-			Prestable:       true,
+			PreStable:       true,
 			ChangeMajor:     true,
 			ChangeMinor:     false,
 			ChangePatch:     true,
@@ -73,7 +88,7 @@ func TestPrestable(t *testing.T) {
 		},
 		{
 			OldVersion:      "0.1.0",
-			Prestable:       true,
+			PreStable:       true,
 			ChangeMajor:     true,
 			ChangeMinor:     false,
 			ChangePatch:     false,
@@ -83,7 +98,7 @@ func TestPrestable(t *testing.T) {
 		// ChangeMajor = false
 		{
 			OldVersion:      "0.1.0",
-			Prestable:       true,
+			PreStable:       true,
 			ChangeMajor:     false,
 			ChangeMinor:     true,
 			ChangePatch:     true,
@@ -91,7 +106,7 @@ func TestPrestable(t *testing.T) {
 		},
 		{
 			OldVersion:      "0.1.0",
-			Prestable:       true,
+			PreStable:       true,
 			ChangeMajor:     false,
 			ChangeMinor:     true,
 			ChangePatch:     false,
@@ -99,7 +114,7 @@ func TestPrestable(t *testing.T) {
 		},
 		{
 			OldVersion:      "0.1.0",
-			Prestable:       true,
+			PreStable:       true,
 			ChangeMajor:     false,
 			ChangeMinor:     false,
 			ChangePatch:     true,
@@ -107,7 +122,7 @@ func TestPrestable(t *testing.T) {
 		},
 		{
 			OldVersion:      "0.1.0",
-			Prestable:       true,
+			PreStable:       true,
 			ChangeMajor:     false,
 			ChangeMinor:     false,
 			ChangePatch:     false,
@@ -123,7 +138,6 @@ func TestNotPrestable(t *testing.T) {
 		// ChangeMajor = true
 		{
 			OldVersion:      "0.1.0",
-			Prestable:       false,
 			ChangeMajor:     true,
 			ChangeMinor:     true,
 			ChangePatch:     true,
@@ -131,7 +145,6 @@ func TestNotPrestable(t *testing.T) {
 		},
 		{
 			OldVersion:      "0.1.0",
-			Prestable:       false,
 			ChangeMajor:     true,
 			ChangeMinor:     true,
 			ChangePatch:     false,
@@ -139,7 +152,6 @@ func TestNotPrestable(t *testing.T) {
 		},
 		{
 			OldVersion:      "0.1.0",
-			Prestable:       false,
 			ChangeMajor:     true,
 			ChangeMinor:     false,
 			ChangePatch:     true,
@@ -147,7 +159,6 @@ func TestNotPrestable(t *testing.T) {
 		},
 		{
 			OldVersion:      "0.1.0",
-			Prestable:       false,
 			ChangeMajor:     true,
 			ChangeMinor:     false,
 			ChangePatch:     false,
@@ -156,7 +167,6 @@ func TestNotPrestable(t *testing.T) {
 
 		{
 			OldVersion:      "1.0.0",
-			Prestable:       false,
 			ChangeMajor:     true,
 			ChangeMinor:     true,
 			ChangePatch:     true,
@@ -164,7 +174,6 @@ func TestNotPrestable(t *testing.T) {
 		},
 		{
 			OldVersion:      "1.0.0",
-			Prestable:       false,
 			ChangeMajor:     true,
 			ChangeMinor:     true,
 			ChangePatch:     false,
@@ -172,7 +181,6 @@ func TestNotPrestable(t *testing.T) {
 		},
 		{
 			OldVersion:      "1.0.0",
-			Prestable:       false,
 			ChangeMajor:     true,
 			ChangeMinor:     false,
 			ChangePatch:     true,
@@ -180,7 +188,6 @@ func TestNotPrestable(t *testing.T) {
 		},
 		{
 			OldVersion:      "1.0.0",
-			Prestable:       false,
 			ChangeMajor:     true,
 			ChangeMinor:     false,
 			ChangePatch:     false,
@@ -190,7 +197,6 @@ func TestNotPrestable(t *testing.T) {
 		// ChangeMajor = false
 		{
 			OldVersion:      "0.1.0",
-			Prestable:       false,
 			ChangeMajor:     false,
 			ChangeMinor:     true,
 			ChangePatch:     true,
@@ -198,7 +204,6 @@ func TestNotPrestable(t *testing.T) {
 		},
 		{
 			OldVersion:      "0.1.0",
-			Prestable:       false,
 			ChangeMajor:     false,
 			ChangeMinor:     true,
 			ChangePatch:     false,
@@ -206,7 +211,6 @@ func TestNotPrestable(t *testing.T) {
 		},
 		{
 			OldVersion:      "0.1.0",
-			Prestable:       false,
 			ChangeMajor:     false,
 			ChangeMinor:     false,
 			ChangePatch:     true,
@@ -214,7 +218,6 @@ func TestNotPrestable(t *testing.T) {
 		},
 		{
 			OldVersion:      "0.1.0",
-			Prestable:       false,
 			ChangeMajor:     false,
 			ChangeMinor:     false,
 			ChangePatch:     false,
@@ -223,7 +226,6 @@ func TestNotPrestable(t *testing.T) {
 
 		{
 			OldVersion:      "1.0.0",
-			Prestable:       false,
 			ChangeMajor:     false,
 			ChangeMinor:     true,
 			ChangePatch:     true,
@@ -231,7 +233,6 @@ func TestNotPrestable(t *testing.T) {
 		},
 		{
 			OldVersion:      "1.0.0",
-			Prestable:       false,
 			ChangeMajor:     false,
 			ChangeMinor:     true,
 			ChangePatch:     false,
@@ -239,7 +240,6 @@ func TestNotPrestable(t *testing.T) {
 		},
 		{
 			OldVersion:      "1.0.0",
-			Prestable:       false,
 			ChangeMajor:     false,
 			ChangeMinor:     false,
 			ChangePatch:     true,
@@ -247,7 +247,6 @@ func TestNotPrestable(t *testing.T) {
 		},
 		{
 			OldVersion:      "1.0.0",
-			Prestable:       false,
 			ChangeMajor:     false,
 			ChangeMinor:     false,
 			ChangePatch:     false,
@@ -257,6 +256,146 @@ func TestNotPrestable(t *testing.T) {
 
 	runValidBumperChecksOnTable(t, testTable)
 }
+
+// func TestForceStable(t *testing.T) {
+// 	testTable := []bumperTestcase{
+// 		// ChangeMajor = true
+// 		{
+// 			OldVersion:      "0.1.0",
+// 			ForceStable:     true,
+// 			ChangeMajor:     true,
+// 			ChangeMinor:     true,
+// 			ChangePatch:     true,
+// 			ExpectedVersion: "v1.0.0",
+// 		},
+// 		{
+// 			OldVersion:      "0.1.0",
+// 			ForceStable:     true,
+// 			ChangeMajor:     true,
+// 			ChangeMinor:     true,
+// 			ChangePatch:     false,
+// 			ExpectedVersion: "v1.0.0",
+// 		},
+// 		{
+// 			OldVersion:      "0.1.0",
+// 			ForceStable:     true,
+// 			ChangeMajor:     true,
+// 			ChangeMinor:     false,
+// 			ChangePatch:     true,
+// 			ExpectedVersion: "v1.0.0",
+// 		},
+// 		{
+// 			OldVersion:      "0.1.0",
+// 			ForceStable:     true,
+// 			ChangeMajor:     true,
+// 			ChangeMinor:     false,
+// 			ChangePatch:     false,
+// 			ExpectedVersion: "v1.0.0",
+// 		},
+
+// 		{
+// 			OldVersion:      "1.0.0",
+// 			ForceStable:     true,
+// 			ChangeMajor:     true,
+// 			ChangeMinor:     true,
+// 			ChangePatch:     true,
+// 			ExpectedVersion: "v2.0.0",
+// 		},
+// 		{
+// 			OldVersion:      "1.0.0",
+// 			ForceStable:     true,
+// 			ChangeMajor:     true,
+// 			ChangeMinor:     true,
+// 			ChangePatch:     false,
+// 			ExpectedVersion: "v2.0.0",
+// 		},
+// 		{
+// 			OldVersion:      "1.0.0",
+// 			ForceStable:     true,
+// 			ChangeMajor:     true,
+// 			ChangeMinor:     false,
+// 			ChangePatch:     true,
+// 			ExpectedVersion: "v2.0.0",
+// 		},
+// 		{
+// 			OldVersion:      "1.0.0",
+// 			ForceStable:     true,
+// 			ChangeMajor:     true,
+// 			ChangeMinor:     false,
+// 			ChangePatch:     false,
+// 			ExpectedVersion: "v2.0.0",
+// 		},
+
+// 		// ChangeMajor = false
+// 		{
+// 			OldVersion:      "0.1.0",
+// 			ForceStable:     true,
+// 			ChangeMajor:     false,
+// 			ChangeMinor:     true,
+// 			ChangePatch:     true,
+// 			ExpectedVersion: "v0.2.0",
+// 		},
+// 		{
+// 			OldVersion:      "0.1.0",
+// 			ForceStable:     true,
+// 			ChangeMajor:     false,
+// 			ChangeMinor:     true,
+// 			ChangePatch:     false,
+// 			ExpectedVersion: "v0.2.0",
+// 		},
+// 		{
+// 			OldVersion:      "0.1.0",
+// 			ForceStable:     true,
+// 			ChangeMajor:     false,
+// 			ChangeMinor:     false,
+// 			ChangePatch:     true,
+// 			ExpectedVersion: "v0.1.1",
+// 		},
+// 		{
+// 			OldVersion:      "0.1.0",
+// 			ForceStable:     true,
+// 			ChangeMajor:     false,
+// 			ChangeMinor:     false,
+// 			ChangePatch:     false,
+// 			ExpectedVersion: "v0.1.0",
+// 		},
+
+// 		{
+// 			OldVersion:      "1.0.0",
+// 			ForceStable:     true,
+// 			ChangeMajor:     false,
+// 			ChangeMinor:     true,
+// 			ChangePatch:     true,
+// 			ExpectedVersion: "v1.1.0",
+// 		},
+// 		{
+// 			OldVersion:      "1.0.0",
+// 			ForceStable:     true,
+// 			ChangeMajor:     false,
+// 			ChangeMinor:     true,
+// 			ChangePatch:     false,
+// 			ExpectedVersion: "v1.1.0",
+// 		},
+// 		{
+// 			OldVersion:      "1.0.0",
+// 			ForceStable:     true,
+// 			ChangeMajor:     false,
+// 			ChangeMinor:     false,
+// 			ChangePatch:     true,
+// 			ExpectedVersion: "v1.0.1",
+// 		},
+// 		{
+// 			OldVersion:      "1.0.0",
+// 			ForceStable:     true,
+// 			ChangeMajor:     false,
+// 			ChangeMinor:     false,
+// 			ChangePatch:     false,
+// 			ExpectedVersion: "v1.0.0",
+// 		},
+// 	}
+
+// 	runValidBumperChecksOnTable(t, testTable)
+// }
 
 func TestInvalidOldVersion(t *testing.T) {
 
@@ -279,7 +418,7 @@ func TestInvalidOldVersion(t *testing.T) {
 	}
 
 	for _, testCase := range testTable {
-		_, err := nextversion.NewBumper(testCase.OldVersion, testCase.Prestable)
+		_, err := nextversion.NewBumper(testCase.OldVersion, testCase.PreStable, false)
 
 		assert.Error(t, err)
 	}
@@ -287,7 +426,7 @@ func TestInvalidOldVersion(t *testing.T) {
 
 func runValidBumperChecksOnTable(t *testing.T, testTable []bumperTestcase) {
 	for _, testCase := range testTable {
-		b, err := nextversion.NewBumper(testCase.OldVersion, testCase.Prestable)
+		b, err := nextversion.NewBumper(testCase.OldVersion, testCase.PreStable, false)
 
 		b.CollectChange(testCase.ChangeMajor, testCase.ChangeMinor, testCase.ChangePatch)
 		v := b.Next()

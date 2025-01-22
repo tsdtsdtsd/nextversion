@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -8,7 +9,7 @@ import (
 )
 
 // Returns the app instance with the correct minimal value set
-func TestNewAppReturnsCorrectInstance(t *testing.T) {
+func TestApp_NewAppReturnsCorrectInstance(t *testing.T) {
 	app := newApp()
 
 	assert.Equal(t, "nextversion", app.Name)
@@ -17,7 +18,7 @@ func TestNewAppReturnsCorrectInstance(t *testing.T) {
 }
 
 // appAction fails due to missing repo
-func TestAppActionError(t *testing.T) {
+func TestApp_ActionError(t *testing.T) {
 	// Set up test case
 	ctx := cli.NewContext(nil, nil, nil)
 	ctx.Set("repo", "") // Missing repo
@@ -32,8 +33,31 @@ func TestAppActionError(t *testing.T) {
 	// Additional assertions to check the error message or other details
 }
 
+const (
+	repoNoValidTags = "../../fixtures/no-valid-tags"
+	repoValidTag    = "../../fixtures/valid-tag"
+)
+
+func TestApp_NoValidTags_Defaults(t *testing.T) {
+
+	app := newApp()
+
+	// Set up test case args
+
+	args := os.Args[0:1]
+	args = append(args, "--repo="+repoNoValidTags)
+
+	// Call the function under test
+	err := app.Run(args)
+
+	// Check the result
+	assert.NoError(t, err)
+
+	// TODO: capture and check the output
+}
+
 // None of the flags have empty names or string represented values
-func TestAppFlags_NoEmptyValuesOrAliases(t *testing.T) {
+func TestApp_Flags_NoEmptyValuesOrAliases(t *testing.T) {
 	flags := appFlags()
 
 	for _, flag := range flags {
@@ -43,7 +67,7 @@ func TestAppFlags_NoEmptyValuesOrAliases(t *testing.T) {
 }
 
 // Verify that a valid format value returns no error.
-func TestValidFormatValue(t *testing.T) {
+func TestApp_ValidFormatValue(t *testing.T) {
 	ctx := &cli.Context{}
 	values := []string{"simple", "json"}
 
@@ -59,7 +83,7 @@ func TestValidFormatValue(t *testing.T) {
 }
 
 // Verify that an empty format value returns an error.
-func TestEmptyFormatValue(t *testing.T) {
+func TestApp_EmptyFormatValue(t *testing.T) {
 	ctx := &cli.Context{}
 	value := ""
 

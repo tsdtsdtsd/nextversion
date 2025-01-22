@@ -39,10 +39,10 @@ NAME:
    nextversion - versioning helper tool
 
 USAGE:
-   nextversion [global options] command [command options] 
+   nextversion [global options] [command]
 
 VERSION:
-   v0.2.0
+   v0.3.0
 
 DESCRIPTION:
    nextversion detects application version based on git tags and suggests a bumped version based on conventional commits.
@@ -51,12 +51,13 @@ COMMANDS:
    help, h  Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
-   --repo PATH, -r PATH                    PATH to a git repository (default: "./")
-   --format FORMAT, -f FORMAT              Output FORMAT (simple, json) (default: "simple")
-   --default-current VERSION, -d VERSION   Fallback current VERSION if none could be detected (default: "v0.0.0")
-   --pre-stable, -p                        Breaking changes will not increase major version if current version matches v0.*.* (default: false)
-   --help, -h                              show help
-   --version, -v                           print version of this tool (default: false)
+   --repo PATH, -r PATH                   PATH to a git repository (default: "./")
+   --format FORMAT, -f FORMAT             Output FORMAT (simple, json) (default: "simple")
+   --default-current VERSION, -d VERSION  Fallback current VERSION if none could be detected (default: "v0.0.0")
+   --pre-stable, -p                       Breaking changes will not increase major version if current version matches v0.*.* (default: false)
+   --force-stable, -s                     Force updating to at least v1.0.0 (this has precedence over the --pre-stable flag) (default: false)
+   --help, -h                             show help
+   --version, -v                          print version of this tool (default: false)
 
 # Run nextversion 
 

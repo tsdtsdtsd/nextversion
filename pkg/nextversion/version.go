@@ -55,7 +55,7 @@ func Versions(opts *Options) (*Result, error) {
 	}
 	result.CurrentVersionStrict = strings.TrimPrefix(lastTag.Semver.String(), versionPrefix)
 
-	bump, err := NewBumper(result.CurrentVersion, opts.Prestable)
+	bump, err := NewBumper(result.CurrentVersion, opts.PreStable, opts.ForceStable)
 	if err != nil {
 		return result, fmt.Errorf("failed to create version bumper: %w", err)
 	}

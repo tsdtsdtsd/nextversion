@@ -6,25 +6,28 @@ import (
 
 const (
 	versionPrefix = "v"
+	stableVersion = "1.0.0"
 )
 
 type Bumper struct {
 	current     *semver.Version
 	preStable   bool
+	forceStable bool
 	hasBreaking bool
 	hasFeature  bool
 	hasFix      bool
 }
 
-func NewBumper(currentVersion string, preStable bool) (*Bumper, error) {
+func NewBumper(currentVersion string, preStable bool, forceStable bool) (*Bumper, error) {
 	v, err := semver.NewVersion(currentVersion)
 	if err != nil {
 		return nil, err
 	}
 
 	return &Bumper{
-		current:   v,
-		preStable: preStable,
+		current:     v,
+		preStable:   preStable,
+		forceStable: forceStable,
 	}, nil
 }
 
@@ -41,6 +44,10 @@ func (b *Bumper) CollectChange(isBreaking, isFeature, isFix bool) {
 }
 
 func (b *Bumper) Next() string {
+
+	if b.forceStable && b.current.LessThan(semver.MustParse(stableVersion)) {
+		return versionPrefix + stableVersion
+	}
 
 	switch b.preStable {
 	case true:

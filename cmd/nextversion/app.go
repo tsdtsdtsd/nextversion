@@ -42,6 +42,7 @@ func appAction(ctx *cli.Context) error {
 		Format:         ctx.String("format"),
 		DefaultCurrent: ctx.String("default-current"),
 		PreStable:      ctx.Bool("pre-stable"),
+		ForceStable:    ctx.Bool("force-stable"),
 	}
 
 	versions, err := nextversion.Versions(opts)
@@ -84,6 +85,13 @@ func appFlags() []cli.Flag {
 			Value:   false,
 			Aliases: []string{"p"},
 			Usage:   "Breaking changes will not increase major version if current version matches v0.*.*",
+		},
+
+		&cli.BoolFlag{
+			Name:    "force-stable",
+			Value:   false,
+			Aliases: []string{"s"},
+			Usage:   "Force updating to at least v1.0.0 (this has precedence over the --pre-stable flag)",
 		},
 	}
 }
