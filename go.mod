@@ -7,7 +7,7 @@ require (
 	github.com/go-git/go-git/v5 v5.13.2
 	github.com/leodido/go-conventionalcommits v0.12.0
 	github.com/stretchr/testify v1.10.0
-	github.com/urfave/cli/v2 v2.27.5
+	github.com/urfave/cli/v2 v2.27.6
 )
 
 require (
