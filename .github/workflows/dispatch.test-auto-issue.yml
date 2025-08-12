@@ -16,11 +16,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ISSUE_TITLE="Test Issue from nextversion"
-          ISSUE_BODY="### 🔧 Test Issue
+          ISSUE_BODY="### 🔧 Test Issue\n\nThis is a test issue created by a workflow in the \`nextversion\` repo using the built-in \`GITHUB_TOKEN\`. If you see this, it worked!"
 
-This is a test issue created by a GitHub Actions workflow in the \`nextversion\` repo.
-
-If you see this, cross-repo issue creation works without a PAT. 🎉"
 
           curl -X POST https://api.github.com/repos/tsdtsdtsd/nextversion-action/issues \
             -H "Authorization: Bearer $GITHUB_TOKEN" \
