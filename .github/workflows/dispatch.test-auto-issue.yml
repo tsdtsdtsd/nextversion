@@ -9,6 +9,8 @@ permissions:
 jobs:
   test-create-issue:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
 
     steps:
       - name: Create test issue in nextversion-action
