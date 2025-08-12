@@ -17,17 +17,20 @@ const (
 	prereleaseShorthand = "rc"
 
 	defaultCurrent = "v0.0.0"
+
+	DockerTagCharacterSubstitution = "-"
 )
 
 type Result struct {
-	CurrentVersion          string `json:"current"`
-	CurrentVersionStrict    string `json:"current-strict"`
-	HasCurrentVersion       bool   `json:"has-current"`
-	NextVersion             string `json:"next"`
-	NextVersionStrict       string `json:"next-strict"`
-	HasNextVersion          bool   `json:"has-next"`
-	PrereleaseVersion       string `json:"prerelease"`
-	PrereleaseVersionStrict string `json:"prerelease-strict"`
+	CurrentVersion             string `json:"current"`
+	CurrentVersionStrict       string `json:"current-strict"`
+	HasCurrentVersion          bool   `json:"has-current"`
+	NextVersion                string `json:"next"`
+	NextVersionStrict          string `json:"next-strict"`
+	HasNextVersion             bool   `json:"has-next"`
+	PrereleaseVersion          string `json:"prerelease"`
+	PrereleaseVersionStrict    string `json:"prerelease-strict"`
+	PrereleaseDockerTagVersion string `json:"prerelease-docker-tag"`
 }
 
 func Versions(opts *Options) (*Result, error) {
@@ -102,6 +105,7 @@ func Versions(opts *Options) (*Result, error) {
 	result.NextVersionStrict = strings.TrimPrefix(result.NextVersion, versionPrefix)
 
 	result.HasNextVersion = bump.Next() != bump.Current()
+
 	// Prerelease
 
 	prereleaseSuffix, err := getPrereleaseSuffix(repo)
@@ -111,6 +115,8 @@ func Versions(opts *Options) (*Result, error) {
 
 	result.PrereleaseVersion = result.NextVersion + prereleaseSuffix
 	result.PrereleaseVersionStrict = result.NextVersionStrict + prereleaseSuffix
+
+	result.PrereleaseDockerTagVersion = SanitizeDockerTag(result.NextVersionStrict)
 
 	return result, nil
 }
@@ -136,4 +142,27 @@ func getPrereleaseSuffix(repo *git.Repository) (string, error) {
 	result := fmt.Sprintf("-%s+%s.%s", prereleaseShorthand, branchName, hash[0:hashLength])
 
 	return result, nil
+}
+
+// SanitizeDockerTag replaces invalid characters to conform to Docker tag rules
+func SanitizeDockerTag(tag string) string {
+	if len(tag) == 0 {
+		return ""
+	}
+
+	// Ensure the first character is a word character
+	if !regexp.MustCompile(`^[\w]`).MatchString(tag[:1]) {
+		tag = DockerTagCharacterSubstitution + tag[1:]
+	}
+
+	// Replace invalid characters in the rest of the tag
+	re := regexp.MustCompile(`[^\w.-]`)
+	tag = tag[:1] + re.ReplaceAllString(tag[1:], DockerTagCharacterSubstitution)
+
+	// Truncate to 128 characters max
+	if len(tag) > 128 {
+		tag = tag[:128]
+	}
+
+	return tag
 }

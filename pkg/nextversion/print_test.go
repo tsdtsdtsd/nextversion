@@ -21,14 +21,15 @@ func TestPrint(t *testing.T) {
 		{
 			Format: "simple",
 			VersionResult: &nextversion.Result{
-				CurrentVersion:          "v0.1.1",
-				CurrentVersionStrict:    "0.1.1",
-				HasCurrentVersion:       true,
-				NextVersion:             "v0.1.1",
-				NextVersionStrict:       "0.1.1",
-				HasNextVersion:          false,
-				PrereleaseVersion:       "v0.1.1-rc+main.6f2f133",
-				PrereleaseVersionStrict: "0.1.1-rc+main.6f2f133",
+				CurrentVersion:             "v0.1.1",
+				CurrentVersionStrict:       "0.1.1",
+				HasCurrentVersion:          true,
+				NextVersion:                "v0.1.1",
+				NextVersionStrict:          "0.1.1",
+				HasNextVersion:             false,
+				PrereleaseVersion:          "v0.1.1-rc+main.6f2f133",
+				PrereleaseVersionStrict:    "0.1.1-rc+main.6f2f133",
+				PrereleaseDockerTagVersion: "0.1.1-rc-main.6f2f133",
 			},
 			Expected: `CURRENT=v0.1.1
 CURRENT_STRICT=0.1.1
@@ -38,21 +39,23 @@ NEXT_STRICT=0.1.1
 HAS_NEXT=false
 PRERELEASE=v0.1.1-rc+main.6f2f133
 PRERELEASE_STRICT=0.1.1-rc+main.6f2f133
+PRERELEASE_DOCKER_TAG=0.1.1-rc-main.6f2f133
 `,
 		},
 		{
 			Format: "json",
 			VersionResult: &nextversion.Result{
-				CurrentVersion:          "v0.1.1",
-				CurrentVersionStrict:    "0.1.1",
-				HasCurrentVersion:       true,
-				NextVersion:             "v0.1.1",
-				NextVersionStrict:       "0.1.1",
-				HasNextVersion:          false,
-				PrereleaseVersion:       "v0.1.1-rc+main.6f2f133",
-				PrereleaseVersionStrict: "0.1.1-rc+main.6f2f133",
+				CurrentVersion:             "v0.1.1",
+				CurrentVersionStrict:       "0.1.1",
+				HasCurrentVersion:          true,
+				NextVersion:                "v0.1.1",
+				NextVersionStrict:          "0.1.1",
+				HasNextVersion:             false,
+				PrereleaseVersion:          "v0.1.1-rc+main.6f2f133",
+				PrereleaseVersionStrict:    "0.1.1-rc+main.6f2f133",
+				PrereleaseDockerTagVersion: "0.1.1-rc-main.6f2f133",
 			},
-			Expected: `{"current":"v0.1.1","current-strict":"0.1.1","has-current":true,"next":"v0.1.1","next-strict":"0.1.1","has-next":false,"prerelease":"v0.1.1-rc+main.6f2f133","prerelease-strict":"0.1.1-rc+main.6f2f133"}`,
+			Expected: `{"current":"v0.1.1","current-strict":"0.1.1","has-current":true,"next":"v0.1.1","next-strict":"0.1.1","has-next":false,"prerelease":"v0.1.1-rc+main.6f2f133","prerelease-strict":"0.1.1-rc+main.6f2f133","prerelease-docker-tag":"0.1.1-rc-main.6f2f133"}`,
 		},
 	}
 

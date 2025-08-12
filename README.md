@@ -70,6 +70,7 @@ NEXT_STRICT=0.2.0
 HAS_NEXT=true
 PRERELEASE=v0.2.0-rc+main.cd81544
 PRERELEASE_STRICT=0.2.0-rc+main.cd81544
+PRERELEASE_DOCKER_TAG=0.2.0-rc-main.cd81544
 
 # Please return JSON and make it readable
 
@@ -82,6 +83,7 @@ PRERELEASE_STRICT=0.2.0-rc+main.cd81544
   "next-strict": "0.2.0",
   "has-next": true,
   "prerelease": "v0.2.0-rc+main.cd81544",
-  "prerelease-strict": "0.2.0-rc+main.cd81544"
+  "prerelease-strict": "0.2.0-rc+main.cd81544",
+  "prerelease-docker-tag": "0.2.0-rc-main.cd81544"
 }
 ```

@@ -1,6 +1,7 @@
 package nextversion_test
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 
@@ -152,4 +153,56 @@ func TestVersions_NoValidTags_ForceStable(t *testing.T) {
 	assert.Condition(t, func() bool {
 		return strings.HasPrefix(result.PrereleaseVersionStrict, expectedNextStrict+"-rc+main.")
 	}, "PrereleaseVersionStrict mismatch "+result.PrereleaseVersionStrict)
+}
+
+func TestSanitizeDockerTag(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected string
+	}{
+		{
+			"valid-tag_1.2.3",
+			"valid-tag_1.2.3",
+		},
+		{
+			"-invalid-start",
+			fmt.Sprintf("%sinvalid-start", nextversion.DockerTagCharacterSubstitution),
+		},
+		{
+			"hello world!",
+			fmt.Sprintf("hello%sworld%s", nextversion.DockerTagCharacterSubstitution, nextversion.DockerTagCharacterSubstitution),
+		},
+		{
+			"this/is\\not@valid*tag",
+			fmt.Sprintf("this%sis%snot%svalid%stag",
+				nextversion.DockerTagCharacterSubstitution,
+				nextversion.DockerTagCharacterSubstitution,
+				nextversion.DockerTagCharacterSubstitution,
+				nextversion.DockerTagCharacterSubstitution),
+		},
+		{
+			"", "",
+		},
+		{
+			"@#$%",
+			fmt.Sprintf("%s%s%s%s",
+				nextversion.DockerTagCharacterSubstitution,
+				nextversion.DockerTagCharacterSubstitution,
+				nextversion.DockerTagCharacterSubstitution,
+				nextversion.DockerTagCharacterSubstitution),
+		},
+		{
+			"1valid", "1valid",
+		},
+		{
+			string(make([]byte, 200)),
+			strings.Repeat(nextversion.DockerTagCharacterSubstitution, 128),
+		},
+	}
+
+	for _, test := range tests {
+		output := nextversion.SanitizeDockerTag(test.input)
+		assert.LessOrEqual(t, len(output), 128, "tag must not have more than 128 characters")
+		assert.Equal(t, output, test.expected)
+	}
 }

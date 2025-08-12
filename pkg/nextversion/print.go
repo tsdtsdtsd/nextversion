@@ -21,6 +21,7 @@ func Print(writer io.Writer, versions *Result, format string) error {
 		fmt.Fprintf(writer, "HAS_NEXT=%t\n", versions.HasNextVersion)
 		fmt.Fprintf(writer, "PRERELEASE=%s\n", versions.PrereleaseVersion)
 		fmt.Fprintf(writer, "PRERELEASE_STRICT=%s\n", versions.PrereleaseVersionStrict)
+		fmt.Fprintf(writer, "PRERELEASE_DOCKER_TAG=%s\n", versions.PrereleaseDockerTagVersion)
 
 	case "json":
 
