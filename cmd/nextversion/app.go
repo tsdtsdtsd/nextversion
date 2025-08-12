@@ -14,7 +14,7 @@ func newApp() *cli.App {
 
 	cli.VersionFlag = &cli.BoolFlag{
 		Name:    "version",
-		Aliases: []string{"v"},
+		Aliases: []string{"v"}, // TODO: possibly remove this alias when adding --verbose flag
 		Usage:   "print version of this tool",
 	}
 
