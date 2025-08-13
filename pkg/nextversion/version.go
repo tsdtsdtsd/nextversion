@@ -116,7 +116,7 @@ func Versions(opts *Options) (*Result, error) {
 	result.PrereleaseVersion = result.NextVersion + prereleaseSuffix
 	result.PrereleaseVersionStrict = result.NextVersionStrict + prereleaseSuffix
 
-	result.PrereleaseDockerTagVersion = SanitizeDockerTag(result.NextVersionStrict)
+	result.PrereleaseDockerTagVersion = SanitizeDockerTag(result.PrereleaseVersionStrict)
 
 	return result, nil
 }
