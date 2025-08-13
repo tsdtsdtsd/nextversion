@@ -2,7 +2,7 @@ name: Create Action Issue on Release
 
 on:
   release:
-    types: [published]
+    types: [created, published, released]
 
 jobs:
   create-issue:
