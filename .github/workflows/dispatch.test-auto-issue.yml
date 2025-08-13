@@ -27,5 +27,5 @@ jobs:
           curl -X POST https://api.github.com/repos/tsdtsdtsd/nextversion-action/issues \
             -H "Authorization: Bearer $GITHUB_TOKEN" \
             -H "Accept: application/vnd.github+json" \
-            -d "$(jq -n --arg title "$ISSUE_TITLE" --arg body "$ISSUE_BODY" \
-                  '{title: $title, body: $body}')"
+            -d "$(jq -n --arg title "$ISSUE_TITLE" --arg body "$ISSUE_BODY" --argjson labels '["update"]' \
+                  '{title: $title, body: $body, labels: $labels}')"
