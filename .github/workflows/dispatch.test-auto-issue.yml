@@ -12,11 +12,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ACTION_ISSUE_PAT }}
         run: |
-          ISSUE_TITLE="Test Issue from nextversion 🔧"
+          ISSUE_TITLE="Automation test issue from nextversion 🔧"
           ISSUE_BODY=$(cat << EOF
+
+          **THIS IS AN AUTOMATION TEST, PLEASE IGNORE**
+
           \`nextversion\` had a [new release](https://github.com/tsdtsdtsd/nextversion/releases/latest).
 
-          - [ ] update path to new binary
+          - [ ] update download path to new binary
           - [ ] any new inputs?
           - [ ] any new outputs?
           - [ ] update README.md
