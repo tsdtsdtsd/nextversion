@@ -42,7 +42,7 @@ USAGE:
    nextversion [global options] [command]
 
 VERSION:
-   v0.4.1
+   v0.5.1
 
 DESCRIPTION:
    nextversion detects application version based on git tags and suggests a bumped version based on conventional commits.
