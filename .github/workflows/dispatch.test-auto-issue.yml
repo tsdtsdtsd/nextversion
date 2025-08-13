@@ -8,24 +8,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Create test issue in nextversion-action
+      - name: Create issue in nextversion-action
         env:
           GITHUB_TOKEN: ${{ secrets.ACTION_ISSUE_PAT }}
         run: |
           ISSUE_TITLE="Test Issue from nextversion 🔧"
           ISSUE_BODY=$(cat << EOF
-          ### 🔧 Test Issue
-          
-          This is a test issue created by a workflow in the \`nextversion\` repo using a \`PAT\`.
+          \`nextversion\` had a [new release](https://github.com/tsdtsdtsd/nextversion/releases/latest).
 
-          - If you see this, 
-          - it worked!
+          - [ ] update path to new binary
+          - [ ] any new inputs?
+          - [ ] any new outputs?
+          - [ ] update README.md
+
           EOF
           )
 
+          # Create the issue and capture its number
+          ISSUE_NUMBER=$(curl -X POST https://api.github.com/repos/tsdtsdtsd/nextversion-action/issues \
+              -H "Authorization: Bearer $GITHUB_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              -d "$(jq -n --arg title "$ISSUE_TITLE" --arg body "$ISSUE_BODY" --argjson labels '["update"]' \
+                '{title: $title, body: $body, labels: $labels}')"" \
+            | jq -r '.number' )
 
-          curl -X POST https://api.github.com/repos/tsdtsdtsd/nextversion-action/issues \
-            -H "Authorization: Bearer $GITHUB_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            -d "$(jq -n --arg title "$ISSUE_TITLE" --arg body "$ISSUE_BODY" --argjson labels '["update"]' \
-                  '{title: $title, body: $body, labels: $labels}')"
+          echo "issue_number=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
