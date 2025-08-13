@@ -26,7 +26,7 @@ jobs:
           - [ ] any new outputs?
           - [ ] update README.md
 
-          **This issue was automatically created by the \`nextversion\` repo.**
+          **:octocat: This issue was automatically created by the \`nextversion\` repo.**
           EOF
           )
 
