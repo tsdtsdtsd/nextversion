@@ -24,12 +24,8 @@ jobs:
           EOF
           )
 
-          # Create the issue and capture its number
-          ISSUE_NUMBER=$(curl -X POST https://api.github.com/repos/tsdtsdtsd/nextversion-action/issues \
-              -H "Authorization: Bearer $GITHUB_TOKEN" \
-              -H "Accept: application/vnd.github+json" \
-              -d "$(jq -n --arg title "$ISSUE_TITLE" --arg body "$ISSUE_BODY" --argjson labels '["update"]' \
-                '{title: $title, body: $body, labels: $labels}')"" \
-            | jq -r '.number' )
-
-          echo "issue_number=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
+          curl -X POST https://api.github.com/repos/tsdtsdtsd/nextversion-action/issues \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -d "$(jq -n --arg title "$ISSUE_TITLE" --arg body "$ISSUE_BODY" --argjson labels '["update"]' \
+                  '{title: $title, body: $body, labels: $labels}')"
