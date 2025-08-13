@@ -12,8 +12,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ACTION_ISSUE_PAT }}
         run: |
-          ISSUE_TITLE="Test Issue from nextversion"
-          ISSUE_BODY="### 🔧 Test Issue\n\nThis is a test issue created by a workflow in the \`nextversion\` repo using the built-in \`GITHUB_TOKEN\`. If you see this, it worked!"
+          ISSUE_TITLE="Test Issue from nextversion 🔧"
+          ISSUE_BODY=$(cat << EOF
+          ### 🔧 Test Issue
+          
+          This is a test issue created by a workflow in the \`nextversion\` repo using a \`PAT\`.
+
+          - If you see this, 
+          - it worked!
+          EOF
+          )
 
 
           curl -X POST https://api.github.com/repos/tsdtsdtsd/nextversion-action/issues \
