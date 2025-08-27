@@ -4,7 +4,9 @@ import (
 	"testing"
 
 	"github.com/go-git/go-git/v5"
+	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/stretchr/testify/assert"
+	mock "github.com/stretchr/testify/mock"
 	"github.com/tsdtsdtsd/nextversion/pkg/nextversion"
 )
 
@@ -46,4 +48,21 @@ func TestLastTag(t *testing.T) {
 			assert.Equal(t, testCase.ExpectedTagName, lastTag.Name)
 		})
 	}
+}
+
+func TestLastTag_RepoFailures(t *testing.T) {
+	_, err := nextversion.LastTag(nil)
+	assert.Error(t, err)
+
+	mockRepo := nextversion.NewMockGitRepository(t)
+	mockRepo.On("Tags").Return(nil, assert.AnError).Once()
+	mockRepo.On("TagObject", mock.Anything).Return(nil, assert.AnError).Once()
+
+	_, err = nextversion.LastTag(mockRepo)
+	assert.Error(t, err)
+
+	_, err = mockRepo.TagObject(plumbing.NewHash("test"))
+	assert.Error(t, err)
+
+	mockRepo.AssertExpectations(t)
 }

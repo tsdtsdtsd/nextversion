@@ -4,9 +4,9 @@ import (
 	"fmt"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/plumbing/object"
+	"github.com/go-git/go-git/v5/plumbing/storer"
 )
 
 type Tag struct {
@@ -16,12 +16,22 @@ type Tag struct {
 	exists bool
 }
 
+// GitRepository
+type GitRepository interface {
+	Tags() (storer.ReferenceIter, error)
+	TagObject(h plumbing.Hash) (*object.Tag, error)
+}
+
 // LastTag returns an annotated tag object witch has no prerelease identifier and is the greates semantic version
-func LastTag(repo *git.Repository) (*Tag, error) {
+func LastTag(repo GitRepository) (*Tag, error) {
 
 	lastTag := Tag{
 		Commit: object.Commit{},
 		Semver: &semver.Version{},
+	}
+
+	if repo == nil {
+		return &lastTag, fmt.Errorf("repository is nil")
 	}
 
 	tagRefs, err := repo.Tags()

@@ -1,0 +1,4 @@
+packages:
+  github.com/tsdtsdtsd/nextversion/pkg/nextversion:
+    interfaces:
+      GitRepository:
